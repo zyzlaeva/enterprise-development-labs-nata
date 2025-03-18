@@ -8,7 +8,7 @@ namespace Mediateca.Domain.Tests;
 public class MediatecaTests
 {
     /// <summary>
-    /// Параметризованный тест метода
+    /// Параметризованный тест метода получения количества альбомов за определенный год
     /// </summary>
     /// <param name="authorId"></param>
     /// <param name="expectedCount"></param>
@@ -24,7 +24,7 @@ public class MediatecaTests
     }
 
     /// <summary>
-    /// Непараметрический тест метода
+    /// Непараметрический тест метода для получения продолжительности самого короткого и длинного альбомов, а также средней продолжительности среди всех
     /// </summary>
     [Fact]
     public async Task GetAlbumsMetrics_Success()
@@ -35,7 +35,7 @@ public class MediatecaTests
     }
 
     /// <summary>
-    /// Непараметрический тест метода
+    /// Непараметрический тест метода получения информации обо всех музыкантах
     /// </summary>
     [Fact]
     public async Task GetMusiciansInfo_Success()
@@ -46,7 +46,7 @@ public class MediatecaTests
     }
 
     /// <summary>
-    /// Параметризованный тест метода
+    /// Параметризованный тест метода для получения информации обо всех треках конкретного альбома (по ID)
     /// </summary>
     [Theory]
     [InlineData(5, 2)]
@@ -60,7 +60,7 @@ public class MediatecaTests
     }
 
     /// <summary>
-    /// Непараметрический тест метода
+    /// Непараметрический тест метода для получения топ 5 самых длинных альбомов
     /// </summary>
     [Fact]
     public async Task GetTop5AlbumsByDuration()
@@ -71,7 +71,7 @@ public class MediatecaTests
     }
 
     /// <summary>
-    /// Непараметрический тест метода
+    /// Непараметрический тест метода для получения музыкантов с наибольшим количеством альбомов
     /// </summary>
     [Fact]
     public async Task GetMaxAlbumsArtist_Success()
