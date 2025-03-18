@@ -7,13 +7,36 @@ namespace Mediateca.Domain.Services.InMemory;
 /// </summary>
 public class TrackInMemoryRepository : ITrackRepository
 {
+    private List<Musician> _musicians;
+    private List<Album> _albums;
     private List<Track> _tracks;
+
     /// <summary>
     /// Конструктор репозитория
     /// </summary>
     public TrackInMemoryRepository()
     {
+        _musicians = DataSeeder.Musicians;
+        _albums = DataSeeder.Albums;
         _tracks = DataSeeder.Tracks;
+
+        foreach (var a in _musicians)
+        {
+            a.Albums = [];
+            a.Albums?.AddRange(_albums.Where(ba => ba.MusicianId == a.Id));
+        }
+
+        foreach (var b in _albums)
+        {
+            b.Musician = _musicians.FirstOrDefault(a => a.Id == b.MusicianId);
+            b.Tracks = [];
+            b.Tracks?.AddRange(_tracks.Where(ba => ba.AlbumId == b.Id));
+        }
+
+        foreach (var b in _tracks)
+        {
+            b.Album = _albums.FirstOrDefault(a => a.Id == b.AlbumId);
+        }
     }
 
     /// <inheritdoc/>
@@ -135,6 +158,7 @@ public class TrackInMemoryRepository : ITrackRepository
             .Select(x => x.Musician);
 
         var musicianAlbumCount = tracks
+            .Where(x => x.Album != null)
             .Select(x => x.Album)
             .GroupBy(a => a.MusicianId)
             .Select(x => new
