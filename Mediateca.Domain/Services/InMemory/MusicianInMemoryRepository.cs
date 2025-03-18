@@ -8,8 +8,6 @@ namespace Mediateca.Domain.Services.InMemory;
 public class MusicianInMemoryRepository : IRepository<Musician, int>
 {
     private List<Musician> _musicians;
-    private List<Album> _albums;
-    private List<Track> _tracks;
 
     /// <summary>
     /// Конструктор репозитория
@@ -17,26 +15,6 @@ public class MusicianInMemoryRepository : IRepository<Musician, int>
     public MusicianInMemoryRepository()
     {
         _musicians = DataSeeder.Musicians;
-        _albums = DataSeeder.Albums;
-        _tracks = DataSeeder.Tracks;
-
-        foreach (var a in _musicians)
-        {
-            a.Albums = [];
-            a.Albums?.AddRange(_albums.Where(ba => ba.MusicianId == a.Id));
-        }
-
-        foreach (var b in _albums)
-        {
-            b.Musician = _musicians.FirstOrDefault(a => a.Id == b.MusicianId);
-            b.Tracks = [];
-            b.Tracks?.AddRange(_tracks.Where(ba => ba.AlbumId == b.Id));
-        }
-
-        foreach (var b in _tracks)
-        {
-            b.Album = _albums.FirstOrDefault(a => a.Id == b.AlbumId);
-        }
     }
 
     /// <inheritdoc/>
@@ -91,12 +69,4 @@ public class MusicianInMemoryRepository : IRepository<Musician, int>
     /// <inheritdoc/>
     public Task<IList<Musician>> GetAll() =>
         Task.FromResult((IList<Musician>)_musicians);
-
-    public async Task<IList<string>> GetMusiciansInfo()
-    {
-        var musicians = await GetAll();
-        return musicians
-            .Select(x => $"Имя: {x.Name}, о музыканте: {x.Description}")
-            .ToList();
-    }
 }
